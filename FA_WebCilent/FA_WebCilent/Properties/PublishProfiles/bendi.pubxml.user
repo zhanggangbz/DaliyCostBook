@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
+来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\LLII\Documents\OutPutIIS</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/CYQ.Data.dll">
+      <publishTime>08/31/2017 09:34:54</publishTime>
+    </File>
+    <File Include="bin/FA_WebCilent.dll">
+      <publishTime>09/12/2017 16:42:27</publishTime>
+    </File>
+    <File Include="css/Gstyle.css">
+      <publishTime>09/08/2017 16:38:57</publishTime>
+    </File>
+    <File Include="img/icon_nav_article.png">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="img/icon_nav_button.png">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="img/icon_nav_msg.png">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="img/icon_nav_search_bar.png">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="index.aspx">
+      <publishTime>09/01/2017 09:53:27</publishTime>
+    </File>
+    <File Include="index.html">
+      <publishTime>09/15/2017 11:50:48</publishTime>
+    </File>
+    <File Include="js/viewindex.js">
+      <publishTime>09/07/2017 16:26:10</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="View/additem.aspx">
+      <publishTime>09/07/2017 10:41:30</publishTime>
+    </File>
+    <File Include="View/additem.html">
+      <publishTime>09/15/2017 11:50:48</publishTime>
+    </File>
+    <File Include="View/addtype.aspx">
+      <publishTime>09/06/2017 10:51:02</publishTime>
+    </File>
+    <File Include="View/addtype.html">
+      <publishTime>09/15/2017 11:50:48</publishTime>
+    </File>
+    <File Include="View/index.aspx">
+      <publishTime>09/06/2017 17:22:11</publishTime>
+    </File>
+    <File Include="View/index.html">
+      <publishTime>09/15/2017 11:50:48</publishTime>
+    </File>
+    <File Include="View/setting.aspx">
+      <publishTime>09/06/2017 18:22:29</publishTime>
+    </File>
+    <File Include="View/setting.html">
+      <publishTime>09/15/2017 11:50:46</publishTime>
+    </File>
+    <File Include="View/showitem.html">
+      <publishTime>09/12/2017 16:37:45</publishTime>
+    </File>
+    <File Include="ViewAction/ActionProcess.ashx">
+      <publishTime>09/07/2017 15:51:52</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>09/07/2017 14:19:44</publishTime>
+    </File>
+    <File Include="weui/css/jquery-weui.css">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="weui/css/jquery-weui.min.css">
+      <publishTime>08/31/2017 09:33:41</publishTime>
+    </File>
+    <File Include="weui/js/city-picker.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/js/city-picker.min.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/js/jquery-weui.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/js/jquery-weui.min.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/js/swiper.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/js/swiper.min.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/lib/fastclick.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/lib/jquery-2.1.4.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/lib/weui.css">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/lib/weui.min.css">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+    <File Include="weui/lib/weui.min.js">
+      <publishTime>09/07/2017 18:40:52</publishTime>
+    </File>
+    <File Include="weui/lib/zepto.js">
+      <publishTime>08/31/2017 09:33:43</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

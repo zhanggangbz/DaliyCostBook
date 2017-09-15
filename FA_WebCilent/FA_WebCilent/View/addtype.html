@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="description" content="我的账本增加消费类型">
+        <meta name="full-screen" content="yes">
+        <meta name="browsermode" content="application">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="x5-page-mode" content="app">
+		
+		<link rel="stylesheet" href="../weui/lib/weui.min.css">
+		<link rel="stylesheet" href="../weui/css/jquery-weui.css">
+		<link rel="stylesheet" href="../css/Gstyle.css">
+		
+		<title>增加消费类型-我的账本</title>
+	</head>
+	<body>
+		<h1 style="margin-left: 10px;margin-top: 10px;">增加消费类型</h1>
+
+		<div class="weui-cells weui-cells_form">
+			<div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label">名称</label></div>
+				<div class="weui-cell__bd">
+					<input id="typename" class="weui-input" type="text" placeholder="名称">
+				</div>
+			</div>
+			
+			<div class="weui-cell weui-cell_select weui-cell_select-after">
+				<div class="weui-cell__hd">
+					<label for="" class="weui-label">父类型</label>
+				</div>
+				<div class="weui-cell__bd">
+					<select id="parentid" class="weui-select" name="select2">
+					</select>
+				</div>
+			</div>
+		
+			<div class="weui-cells_checkbox">
+				<label class="weui-cell weui-check__label" for="isincome">
+					<div class="weui-cell__hd">
+						<input id="isincome" type="checkbox" class="weui-check" name="checkbox1">
+						<i class="weui-icon-checked"></i>
+					</div>
+					<div class="weui-cell__bd">
+						<p>是收入</p>
+					</div>
+				</label>
+			</div>
+			
+		</div>
+		
+		<div class="weui-btn-area">
+            <input id="submitbtn" value="提交" type="button" class="weui-btn weui-btn_primary" onclick="addtype()" >
+		</div>
+		
+		<script src="../weui/lib/jquery-2.1.4.js"></script>
+		<script src="../weui/lib/fastclick.js"></script>
+        <script src="../weui/js/jquery-weui.js"></script>
+        <script src="../js/viewindex.js"></script>
+		<script>
+			$(function() {
+			    FastClick.attach(document.body);
+
+			    $.showLoading("正在加载");
+
+			    $.ajax({
+			        url: '../ViewAction/ActionProcess.ashx',
+			        type: "POST",
+			        data: {
+			            action: "getallparenttypejson"
+			        },
+			        dataType: 'json',
+			        success: function (data) {
+			            $.hideLoading();
+			            if (data.msg == 1) {
+
+			                $.each(data.msgbox, function (n, value) {
+			                    $("#parentid").append("<option value='" + value.value + "'>" + value.label + "</option>");
+			                });
+			                $("#parentid").selectedIndex = 0;
+			            } else {
+			                $.toast("消费类型获取失败", "forbidden");
+			            }
+			        },
+			        error: function () {
+			            $.hideLoading();
+			            $.toast("系统错误", "forbidden");
+			        }
+			    });
+			});
+		</script>
+
+		<script>
+            function addtype() {
+                $.showLoading("正在提交");
+
+                $.ajax({
+                    url: '../ViewAction/ActionProcess.ashx',
+                    type: "POST",
+                    data: {
+                        action: "addtypeaction",
+                        typename: $('#typename').val(),
+                        parentid: $('#parentid').val(),
+                        isincome: $('#isincome')[0].checked
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.hideLoading();
+                        if (data.msg == 0) {
+                            $.toast(data.msgbox, "forbidden");
+                        } else {
+                            $.toast(data.msgbox);
+                            $('#typename').val("");
+                            $('#isincome')[0].checked = false;
+                        }
+                    },
+                    error: function () {
+                        $.hideLoading();
+                        $.toast("系统错误", "forbidden");
+                    }
+                });
+            }
+        </script>
+	</body>
+</html>

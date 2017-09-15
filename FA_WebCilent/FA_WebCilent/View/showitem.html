@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="我的账本消费记录">
+
+    <link rel="stylesheet" href="../weui/lib/weui.min.css">
+    <link rel="stylesheet" href="../weui/css/jquery-weui.css">
+    <link rel="stylesheet" href="../css/Gstyle.css">
+
+    <title>消费记录-我的账本</title>
+</head>
+<body>
+    <h1 style="margin-left: 10px;margin-top: 10px;">记录</h1>
+
+    <div class="page__bd">
+        <div id="allitems" class="weui-cells">
+        </div>
+        <div class="weui-loadmore">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+    </div>
+
+    <script src="../weui/lib/jquery-2.1.4.js"></script>
+    <script src="../weui/lib/fastclick.js"></script>
+    <script src="../weui/js/jquery-weui.js"></script>
+    <script src="../js/viewindex.js"></script>
+    <script>
+        var _pageindex = 1;
+        var _pagecoumt = 20;
+
+
+        function searthitem() {
+            $.ajax({
+                url: '../ViewAction/ActionProcess.ashx',
+                type: "POST",
+                data: {
+                    action: "searthiteminfo",
+                    pageindex: _pageindex,
+                    pagecoumt: _pagecoumt,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg == 0) {
+                        $.toast(data.msgbox, "forbidden");
+                    } else {
+
+                        $.each(data.msgbox, function (n, value) {
+                            var location = value.I_Location;
+                            if (location == null)
+                            {
+                                location = "未知位置";
+                            }
+                            $("#allitems").append("<div class='weui-cell'> <div class='weui-cell__bd'> <p>￥" + value.I_Money + "</p> <p class='show2font'>" + value.I_CDate + "</p> </div> <div class='weui-cell__ft'><p>" + value.I_Remark + "</p> <p class='show2font'>" + location + "&nbsp;&nbsp;" + value.F_Y_Id + "&nbsp;&nbsp;" + value.F_U_Id + "</p> </div> </div>");
+                        });
+
+                        _pageindex++;
+                    }
+                },
+                error: function () {
+                    $.toast("系统错误", "forbidden");
+                }
+            });
+        }
+
+        $(function () {
+            FastClick.attach(document.body);
+            searthitem();
+        });
+    </script>
+
+    <script>
+        var loading = false;
+        $(document.body).infinite().on("infinite", function () {
+            if (loading) return;
+            loading = true;
+            $.ajax({
+                url: '../ViewAction/ActionProcess.ashx',
+                type: "POST",
+                data: {
+                    action: "searthiteminfo",
+                    pageindex: _pageindex,
+                    pagecoumt: _pagecoumt,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg == 0) {
+                        $.toast(data.msgbox, "forbidden");
+                    } else {
+
+                        $.each(data.msgbox, function (n, value) {
+                            var location = value.I_Location;
+                            if (location == null) {
+                                location = "未知位置";
+                            }
+                            $("#allitems").append("<div class='weui-cell'> <div class='weui-cell__bd'> <p>￥" + value.I_Money + "</p> <p class='show2font'>" + value.I_CDate + "</p> </div> <div class='weui-cell__ft'><p>" + value.I_Remark + "</p> <p class='show2font'>" + location + "&nbsp;&nbsp;" + value.F_Y_Id + "&nbsp;&nbsp;" + value.F_U_Id + "</p> </div> </div>");
+                        });
+
+                        _pageindex++;
+                    }
+                    loading = false;
+                },
+                error: function () {
+                    $.toast("系统错误", "forbidden");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

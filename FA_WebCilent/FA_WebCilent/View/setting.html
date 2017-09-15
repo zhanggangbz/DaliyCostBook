@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="description" content="我的账本增加消费类型">
+        <meta name="full-screen" content="yes">
+        <meta name="browsermode" content="application">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="x5-page-mode" content="app">
+		
+		<link rel="stylesheet" href="../weui/lib/weui.min.css">
+		<link rel="stylesheet" href="../weui/css/jquery-weui.css">
+		<link rel="stylesheet" href="../css/Gstyle.css">
+		
+		<title>个人中心-我的账本</title>
+	</head>
+	<body>
+		<header class='login-header'>
+			<h1 class="login-title">
+				<div style="width:50px; height:50px; background-color:#9ED99D; border-radius:25px;margin: 0 auto;">
+					<span id="showname" style="height:50px; line-height:50px; display:block; color:#FFF; text-align:center;">测</span>
+				</div>
+			</h1>
+		</header>
+		
+        <div class="weui-form-preview">
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color: #EC8B89;">上周花费</label>
+                    <em id="lastweekhf" class="weui-form-preview__value">¥0.0</em>
+                </div>
+            </div>
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color: #10AEFF;">上周收入</label>
+                    <em id="lastweeksr" class="weui-form-preview__value">¥0.0</em>
+                </div>
+            </div>
+
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color: #EC8B89;">本周花费</label>
+                    <em id="curweekhf" class="weui-form-preview__value">¥0.0</em>
+                </div>
+            </div>
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color: #10AEFF;">本周收入</label>
+                    <em id="curweeksr" class="weui-form-preview__value">¥0.0</em>
+                </div>
+            </div>
+		</div>
+		
+		<div class="weui-footer weui-footer_fixed-bottom"  style="margin-bottom:53px"> 
+			<input id="logout" value="退出" type="button" class="weui-btn weui-btn_warn" onclick="logout()">
+		</div>
+
+
+        <script src="../weui/lib/jquery-2.1.4.js"></script>
+        <script src="../weui/lib/fastclick.js"></script>
+        <script src="../weui/js/jquery-weui.js"></script>
+        <script src="../js/viewindex.js"></script>
+        <script>
+
+            function setValueInfo(name, lastcost, curcost) {
+                $('#showname').text(name);
+                $('#lastweekhf').text('¥' + lastcost.hf);
+                $('#lastweeksr').text('¥' + lastcost.sr);
+                $('#curweekhf').text('¥' + curcost.hf);
+                $('#curweeksr').text('¥' + curcost.sr);
+            };
+
+			$(function() {
+			    FastClick.attach(document.body);
+
+			    $.showLoading("正在加载");
+			    $.ajax({
+			        url: '../ViewAction/ActionProcess.ashx',
+			        type: "POST",
+			        data: {
+			            action: "getsettinginfo"
+			        },
+			        dataType: 'json',
+			        success: function (data) {
+			            $.hideLoading();
+			            if (data.msg == 0) {
+			                $.toast("获取信息失败", "forbidden");
+			            } else {
+			                setValueInfo(data.msgbox.name, data.msgbox.lastweek, data.msgbox.curweek);
+			            }
+			        },
+			        error: function () {
+			            $.hideLoading();
+			            $.toast("系统错误", "forbidden");
+			        }
+			    });
+			});
+
+			function logout()
+			{
+			    $.ajax({
+			        url: '../ViewAction/ActionProcess.ashx',
+			        type: "POST",
+			        data: {
+			            action: "logout"
+			        },
+			        dataType: 'json',
+			        success: function (data) {
+			        },
+			        error: function () {
+			        }
+			    });
+			}
+        </script>
+
+	</body>
+</html>

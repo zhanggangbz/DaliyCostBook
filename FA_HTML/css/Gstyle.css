@@ -1,0 +1,21 @@
+body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.login-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.login-header {
+  padding: 35px 0;
+}
+
+.show2font{
+    font-size: 13px;
+    color:#808080;
+    padding-top: 2px;
+}

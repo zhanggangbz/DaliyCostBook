@@ -1,0 +1,69 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="FA_WebCilent.View.index" %>
+
+<!DOCTYPE html>
+
+<html>
+    <head runat="server">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="description" content="我的账本主页">
+		
+		<link rel="stylesheet" href="../weui/lib/weui.min.css">
+		<link rel="stylesheet" href="../weui/css/jquery-weui.css">
+		<link rel="stylesheet" href="../css/Gstyle.css">
+		
+		<title>主页-我的账本</title>
+    </head>
+    <body ontouchstart>
+		<div class="weui-tab">
+			
+			<div class="weui-tab__bd">
+				<div id="tab" class="weui-tab__bd-item  weui-tab__bd-item--active">
+					<iframe scrolling="yes" height="99%" width="100%" frameborder="0" id="showView" src=""></iframe>
+				</div>
+			</div>
+		
+			<div class="weui-tabbar">
+				<a onclick="changeView(1)" class="weui-tabbar__item weui-bar__item--on" href="#tab" >
+					<div class="weui-tabbar__icon">
+						<img src="../img/icon_nav_msg.png" alt="">
+					</div>
+					<p class="weui-tabbar__label">增加消费记录</p>
+				</a>
+				<a onclick="changeView(2)" class="weui-tabbar__item" href="#tab" >
+					<div class="weui-tabbar__icon">
+						<img src="../img/icon_nav_article.png" alt="">
+					</div>
+					<p class="weui-tabbar__label">增加消费类型</p>
+				</a>
+				<a href="#tab" class="weui-tabbar__item" onclick="changeView(3)">
+					<div class="weui-tabbar__icon">
+						<img src="../img/icon_nav_search_bar.png" alt="">
+					</div>
+					<p class="weui-tabbar__label">查看最近消费</p>
+				</a>
+				<a class="weui-tabbar__item" onclick="changeView(4)" href="#tab">
+					<div class="weui-tabbar__icon">
+						<img src="../img/icon_nav_button.png" alt="">
+					</div>
+					<p class="weui-tabbar__label">设置</p>
+				</a>
+			</div>
+		</div>
+
+
+        <script src="../weui/lib/jquery-2.1.4.js"></script>
+		<script src="../weui/lib/fastclick.js"></script>
+        <script src="../js/viewindex.js"></script>
+		<script>
+			$(function() {
+			    FastClick.attach(document.body);
+			    changeView(1);
+			});
+		</script>
+		<script src="../weui/js/jquery-weui.js"></script>
+		
+
+    </body>
+</html>

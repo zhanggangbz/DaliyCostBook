@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="我的账本登录">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+
+    <link rel="stylesheet" href="weui/lib/weui.min.css">
+    <link rel="stylesheet" href="weui/css/jquery-weui.css">
+    <link rel="stylesheet" href="css/Gstyle.css">
+    <title>登录-我的账本</title>
+</head>
+<body ontouchstart>
+    <header class='login-header'>
+        <h1 class="login-title">登陆</h1>
+    </header>
+    <form id="loginform">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">账号</label></div>
+                <div class="weui-cell__bd">
+                    <input id="username" class="weui-input" type="text" placeholder="账号">
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+                <div class="weui-cell__bd">
+                    <input id="password" class="weui-input" type="password" placeholder="请输入密码">
+                </div>
+            </div>
+
+            <div id="checkbox" class="weui-cells_checkbox">
+                <label class="weui-cell weui-check__label" for="saveuser">
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" class="weui-check" name="checkbox1" id="saveuser" checked="checked">
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p>记住账号密码</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <input id="submitbtn" value="确定" type="button" class="weui-btn weui-btn_primary" onclick="login()" />
+        </div>
+    </form>
+
+	<div class="weui-footer weui-footer_fixed-bottom" style="padding-bottom: 50px;">
+        <p class="weui-footer__links">
+          <a href="/wx" class="weui-footer__link">微信文章自动发布</a>
+        </p>
+      </div>
+	
+    <script src="weui/lib/jquery-2.1.4.js"></script>
+    <script src="weui/lib/fastclick.js"></script>
+    <script>
+		    $(function () {
+		        FastClick.attach(document.body);
+
+		        if (window.localStorage) {
+		            $("#username").val(localStorage.getItem("username"));
+		            $("#password").val(localStorage.getItem("password"));
+		        }
+
+		        var ua = window.navigator.userAgent.toLowerCase();
+		        if (ua.indexOf('micromessenger') > -1) {
+		            $("#checkbox").hide();
+		        }
+
+		    });
+
+		    function login() {
+		        $.showLoading("正在登陆");
+		        _username = $('#loginform input[id=username]').val();
+		        _password = $('#loginform input[id=password]').val();
+		        $.ajax({
+		            url: './ViewAction/ActionProcess.ashx',
+		            type: "POST",
+		            data: {
+		                action: "userlogin",
+		                username: _username,
+		                password: _password
+		            },
+		            dataType: 'json',
+		            success: function (data) {
+		                $.hideLoading();
+		                if (data.msg == 0) {
+		                    $.toast("用户名密码错误","forbidden");
+		                } else {
+		                    //登录成功后保存session，如果选择了记住密码，再保存到本地  
+		                    if ($("#username").saveuser)
+		                    {
+		                        localStorage.setItem("username", _username);
+		                        localStorage.setItem("password", _password);
+		                    }
+		                    else
+		                    {
+		                        localStorage.setItem("username", "");
+		                        localStorage.setItem("password", "");
+		                    }
+		                    window.location.href = './View/index.html';
+		                }
+		            },
+		            error: function () {
+		                $.hideLoading();
+		                $.toast("系统错误", "forbidden");
+		            }
+		        });
+		    }
+    </script>
+    <script src="weui/js/jquery-weui.js"></script>
+
+</body>
+</html>
+

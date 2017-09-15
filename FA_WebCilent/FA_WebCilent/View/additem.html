@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="我的账本增加消费记录">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+
+    <link rel="stylesheet" href="../weui/lib/weui.min.css">
+    <link rel="stylesheet" href="../weui/css/jquery-weui.css">
+    <link rel="stylesheet" href="../css/Gstyle.css">
+
+    <title>增加消费记录-我的账本</title>
+</head>
+<body>
+    <h1 style="margin-left: 10px;margin-top: 10px;">增加消费记录</h1>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">时间</label></div>
+            <div class="weui-cell__bd">
+                <input id="costtime" class="weui-input" type="text" value="" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">金额</label></div>
+            <div class="weui-cell__bd">
+                <input id="costnum" class="weui-input" type="number" placeholder="消费金额">
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label for="" class="weui-label">类型</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input id="typeselect" class="weui-input" type="text" value="午饭" readonly="readonly" onclick="showPicker()">
+                <input id="costtypeid" style="display:none" class="weui-input" type="text" value="444deb215cd94e599b65e87524784735">
+            </div>
+        </div>
+
+        <div style="height: 1px;border-top: 1px solid #D9D9D9;color: #D9D9D9;-webkit-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scaleY(0.5);transform: scaleY(0.5);left: 15px;"></div>
+
+        <div class="weui-cells__title" style="color: #000000;font-size: 17px;">备注</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea id="costrecord" class="weui-textarea" placeholder="请输入文本" rows="3"></textarea>
+                    <!--<div class="weui-textarea-counter"><span>0</span>/200</div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">位置</label></div>
+            <div class="weui-cell__bd">
+                <input id="location" class="weui-input" type="text" placeholder="正在获取">
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-btn-area">
+        <input type="button" class="weui-btn weui-btn_primary" id="submit" onclick="additem()" value="提交">
+    </div>
+
+    <script src="../weui/lib/jquery-2.1.4.js"></script>
+    <script src="../weui/lib/fastclick.js"></script>
+    <script src="../weui/js/jquery-weui.js"></script>
+    <script src="../js/viewindex.js"></script>
+    <script src="../weui/lib/weui.min.js"></script>
+    <script>
+        var typepickinfo;
+        $(function () {
+            FastClick.attach(document.body);
+            var d = new Date();
+            var str = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+            $("#costtime").val(str);
+
+            $("#costtime").datetimePicker({
+                title: '消费时间',
+                min: "1990-12-12",
+                max: "2100-12-12 12:12",
+                onChange: function (picker, values, displayValues) {
+                    console.log(values);
+                }
+            });
+
+            $.showLoading("正在加载");
+
+            $.ajax({
+                url: '../ViewAction/ActionProcess.ashx',
+                type: "POST",
+                data: {
+                    action: "getalltypejson"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $.hideLoading();
+                    if (data.msg == 0) {
+                        $.toast("消费类型获取失败", "forbidden");
+                    } else {
+                        typepickinfo = data.msgbox;
+                    }
+                },
+                error: function () {
+                    $.hideLoading();
+                    $.toast("系统错误", "forbidden");
+                }
+            });
+        });
+
+    </script>
+    <script>
+        function showPicker() {
+            weui.picker(typepickinfo,
+            {
+                onConfirm: function onConfirm(result) {
+                    $("#typeselect").val(result[1].label);
+                    $("#costtypeid").val(result[1].value);
+                },
+                id: 'typeselect'
+            }
+            );
+        }
+
+        function additem()
+        {
+            $.showLoading("正在提交");
+
+            $.ajax({
+                url: '../ViewAction/ActionProcess.ashx',
+                type: "POST",
+                data: {
+                    action: "additemaction",
+                    costtime: $('#costtime').val(),
+                    costnum: $('#costnum').val(),
+                    costtypeid: $('#costtypeid').val(),
+                    costrecord: $('#costrecord').val(),
+                    location: $('#location').val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $.hideLoading();
+                    if (data.msg == 0) {
+                        $.toast(data.msgbox, "forbidden");
+                    } else {
+                        $.toast(data.msgbox);
+                        $('#costnum').val(0);
+                        $('#costrecord').val("");
+                    }
+                },
+                error: function () {
+                    $.hideLoading();
+                    $.toast("系统错误", "forbidden");
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function getLocation() {
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 10000
+            }
+            if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+            }else{
+                $('#location').val("浏览器不支持地理定位。");
+            }
+        }
+        function showError(error){
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    $('#location').val("定位失败,用户拒绝请求地理定位");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    $('#location').val("定位失败,位置信息是不可用");
+                    break;
+                case error.TIMEOUT:
+                    $('#location').val("定位失败,请求获取用户位置超时");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    $('#location').val("定位失败,定位系统失效");
+                    break;
+            }
+        }
+        // function showPosition(position){
+        //     var lat = position.coords.latitude; //纬度
+        //     var lag = position.coords.longitude; //经度
+        //     alert('纬度:'+lat+',经度:'+lag);
+        function showPosition(position){
+            var latlon = position.coords.latitude+','+position.coords.longitude;
+
+            //baidu
+            var url = "http://api.map.baidu.com/geocoder/v2/?ak=yVHqjQWMKk0kP5xr0e0Mi1P3OB1qy9ed&callback=renderReverse&location=" + latlon + "&output=json&pois=0&coordtype=wgs84ll";
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                url: url,
+                beforeSend: function(){
+                    $('#location').val('正在定位...');
+                },
+                success: function (json) {
+                    if(json.status==0){
+                        $('#location').val(json.result.formatted_address);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#location').val(latlon + "地址位置获取失败");
+                }
+            });
+        }
+
+        setTimeout(function () { getLocation() }, 500);
+    </script>
+</body>
+</html>
